@@ -13,8 +13,6 @@ $(document).ready(function () {
   var notes = JSON.parse(localStorage.getItem('notes') || '[]');
   for (var i = 0; i < notes.length; i++) {
     var note = notes[i];
-    // console.log("d: load notes");
-    // console.log("d: " + JSON.stringify(note));
     renderNote(note.id, note.title, note.created, note.body, note.color);
   }
 
@@ -52,8 +50,6 @@ $(document).ready(function () {
     var color = $('notepad').css('background-color');
     var id = noteCount + 1;
 
-    // Save the note to local storage
-    var notes = JSON.parse(localStorage.getItem('notes') || '[]');
     var note = {
       id: id,
       title: title,
@@ -62,6 +58,8 @@ $(document).ready(function () {
       color: color,
     };
 
+    // Load notes from local storage
+    var notes = JSON.parse(localStorage.getItem('notes') || '[]');
     if (activeNote) {
       $('#' + activeNote)[0].children[0].innerHTML = title;
       $('#' + activeNote)[0].children[1].innerHTML = created.toLocaleString("en-US");
@@ -69,16 +67,13 @@ $(document).ready(function () {
       $('#' + activeNote)[0].style.backgroundColor = color;
       $('#edit-mode').removeClass('display').addClass('no-display');
 
+      // Update notes if note ID exist in local storage
       note.id = parseInt(activeNote, 10);
-      // console.log("d: before edit and save note " + JSON.stringify(notes));
-      // notes[activeNote] = note;
       notes.forEach((currentNote, index) => {
         if (currentNote.id === note.id) {
-          // Update the content of the matching note
           notes[index] = note;
         }
       });
-      // console.log("d: after edit and save note " + JSON.stringify(notes));
 
       activeNote = null;
     } else {
@@ -86,11 +81,11 @@ $(document).ready(function () {
       $('#listed').append('<div id="' + id + '" style="background-color: ' + color + '"><div class="list-title">' + title + '</div> <div class="list-date">' + created.toLocaleString("en-US") + '</div> <div class="list-text">' + body + '</div> </div>');
       noteCount++;
 
-      console.log("d: saved notes " + JSON.stringify(note));
-
+      // Update notes with new note
       notes.push(note);
     };
 
+    // Save updated notes to local storage
     localStorage.setItem('notes', JSON.stringify(notes));
 
     $('#title-field').val('');
@@ -103,6 +98,17 @@ $(document).ready(function () {
   $('#btn-delete').click(function () {
     if (activeNote) {
       $('#' + activeNote)[0].remove();
+
+      // Delete note from local storage
+      var notes = JSON.parse(localStorage.getItem('notes') || '[]');
+
+      notes = notes.filter(function (note) {
+        return note.id != activeNote
+      });
+
+      localStorage.setItem('notes', JSON.stringify(notes));
+      localStorage.removeItem('active-note');
+
       activeNote = null;
       $('#edit-mode').removeClass('display').addClass('no-display');
     }
@@ -127,7 +133,6 @@ $(document).ready(function () {
     $('#title-field').css('background-color', color);
     $('#body-field').css('background-color', color);
 
-    console.log("d: active note id " + id);
     localStorage.setItem('active-note', JSON.stringify(id));
   })
 
