@@ -196,3 +196,12 @@ button:hover, .color-box:hover {
 .pink {
   background-color: #FF89FD;
 }
+
+/* jquery dialog */
+.ui-dialog-titlebar {
+  background:red;
+}
+
+.ui-dialog-title {
+  color:white;
+}

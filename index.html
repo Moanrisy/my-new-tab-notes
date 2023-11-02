@@ -4,6 +4,9 @@
 <head>
   <meta charset='utf-8'>
   <title></title>
+  <link rel="shortcut icon" href="#">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel='stylesheet' href='style.css'>
 </head>
 
@@ -53,8 +56,23 @@
     <button id="btn-save">Save</button>
     <button id="btn-delete">Delete / Clear </button>
   </footer>
+
+
+<div hidden class="myTitleClass" id="dialog" title="Don't search if not necessary">
+  <p>Use emacs as query input in your firefox :)</p>
+</div>
+
+  
 </body>
 <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script type='text/javascript' src='app.js'></script>
+<script type='text/javascript' src='keybind.js'></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+       $("#body-field").trigger("focus");
+    });
+    </script>
 
 </html>
